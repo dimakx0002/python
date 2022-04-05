@@ -13,16 +13,15 @@ dom = BeautifulSoup(response.text, 'html.parser')
 
 dom.find_all('div', {'class':'vacancy-serp-item'})
 # пагинация
-def num():
-    nump = 0
-    for item in dom.find_all('a', {'data-qa': 'pager-page'}):
-        nump = int(item.getText())
-    return nump
+nump = 0
+for item in dom.find_all('a', {'data-qa': 'pager-page'}):
+    nump = int(item.getText())
+max_page = nump
 
-max_page = int(num())
 vacancies_list = []
 for page in range(max_page):
     url2 = f'{base_url}{page}'
+    print(url2)
     response2 = requests.get(url2, headers=headers)
     dom2 = BeautifulSoup(response2.text, 'html.parser')
     vacancies2 = dom2.find_all('div', {'class': 'vacancy-serp-item'})
@@ -73,6 +72,7 @@ for page in range(max_page):
                 vacancy_data['vacancy_salary'] = vacancy_salary_data
                 vacancies_list.append(vacancy_data)
 
+pprint(len(vacancies_list))
 with open(f'hh.ru.json', 'w', encoding='utf-8') as file:
     json.dump(vacancies_list, file, ensure_ascii=False, indent=4)
 
