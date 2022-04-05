@@ -2,27 +2,25 @@ import requests
 import json
 from bs4 import BeautifulSoup
 from pprint import pprint
-#https://hh.ru/search/vacancy?area=1&fromSearchLine=true&text=Python&from=suggest_post&page='
-base_url = 'https://hh.ru/search/vacancy?area=1&fromSearchLine=true&text=Python&from=suggest_post&page='
 
+base_url = 'https://hh.ru/search/vacancy?area=1&fromSearchLine=true&text=Python&from=suggest_post&page='
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/98.0.4758.102 Safari/537.36'}
-html_file = ''
+
 url = f'{base_url}'+'0'
 response = requests.get(url, headers=headers)
 dom = BeautifulSoup(response.text, 'html.parser')
-#dom = BeautifulSoup(html_file, 'html.parser')
+
 dom.find_all('div', {'class':'vacancy-serp-item'})
 # пагинация
 def num():
     nump = 0
     for item in dom.find_all('a', {'data-qa': 'pager-page'}):
-
         nump = int(item.getText())
     return nump
 
 max_page = int(num())
-print(max_page)
+
 vacancy = None
 
 vacancies_list = []
