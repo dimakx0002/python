@@ -20,13 +20,9 @@ def num():
     return nump
 
 max_page = int(num())
-
-vacancy = None
-
 vacancies_list = []
 for page in range(max_page):
     url2 = f'{base_url}{page}'
-    print(url2)
     response2 = requests.get(url2, headers=headers)
     dom2 = BeautifulSoup(response2.text, 'html.parser')
     vacancies2 = dom2.find_all('div', {'class': 'vacancy-serp-item'})
@@ -77,7 +73,6 @@ for page in range(max_page):
                 vacancy_data['vacancy_salary'] = vacancy_salary_data
                 vacancies_list.append(vacancy_data)
 
-pprint(len(vacancies_list))
 with open(f'hh.ru.json', 'w', encoding='utf-8') as file:
     json.dump(vacancies_list, file, ensure_ascii=False, indent=4)
 
