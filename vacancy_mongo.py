@@ -24,9 +24,9 @@ nump = 0
 for item in dom.find_all('a', {'data-qa': 'pager-page'}):
     nump = int(item.getText())
 max_page = nump
-
+count = 0
 vacancies_list = []
-for page in range(1):
+for page in range(max_page):
     url2 = f'{base_url}{page}'
     print(url2)
     response2 = requests.get(url2, headers=headers)
@@ -82,7 +82,10 @@ for page in range(1):
                 vacancies_list.append(vacancy_data)
                 try:
                     professions.insert_one(vacancy_data)
+                    count += 1
+                    print(f"Document with id = {vacancy_data['_id']} exist")
                 except DuplicateKeyError:
                     print(f"Document with id = {vacancy_data['_id']} already exist")
 
 pprint(len(vacancies_list))
+pprint(count)
